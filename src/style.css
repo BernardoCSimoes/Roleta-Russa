@@ -1,2 +1,12 @@
 
 @import "tailwindcss";
+
+@keyframes recuo {
+  0%   { transform: translateX(0); }
+  30%  { transform: translateX(20px); }
+  100% { transform: translateX(0); }
+}
+
+.animar-recuo {
+  animation: recuo 0.2s ease-out;
+}
