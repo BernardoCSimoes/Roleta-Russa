@@ -19,14 +19,84 @@ function Shuffle(lista: number[]) {
   }
 }
 
+function playGunshot() {
+  const ctx = new AudioContext();
+
+  // Barulho branco (a "explosão")
+  const bufferSize = Math.floor(ctx.sampleRate * 0.18);
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+
+  const noiseFilter = ctx.createBiquadFilter();
+  noiseFilter.type = 'bandpass';
+  noiseFilter.frequency.value = 700;
+
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(1.2, ctx.currentTime);
+  noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+
+  noise.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(ctx.destination);
+  noise.start();
+
+  // Grave de impacto
+  const osc = ctx.createOscillator();
+  osc.frequency.setValueAtTime(180, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.12);
+
+  const oscGain = ctx.createGain();
+  oscGain.gain.setValueAtTime(1.5, ctx.currentTime);
+  oscGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+
+  osc.connect(oscGain);
+  oscGain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.12);
+}
+
+function playClick() {
+  const ctx = new AudioContext();
+
+  // Clique seco do martelo
+  const bufferSize = Math.floor(ctx.sampleRate * 0.04);
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'highpass';
+  filter.frequency.value = 2000;
+
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.8, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  noise.start();
+}
+
 function Atirar(lista: number[]) {
 
   if (lista[percorreTiro.value] == 1) {
     animando.value = true;
-    setTimeout(() => animando.value = false, 200);
-    perdeu.value = true;
+    playGunshot();
+    setTimeout(() => {
+      animando.value = false;
+      perdeu.value = true;
+    }, 600);
   }
   else {
+    playClick();
     percorreTiro.value++;
   }
 
@@ -41,19 +111,24 @@ function Reiniciar(lista: number[]) {
 </script>
 
 <template>
-  <div class="bg-zinc-900 text-gray-300 w-screen h-screen
+  <div class="bg-zinc-900 text-gray-300 w-screen h-screen overflow-hidden
   flex flex-col justify-center items-center">
     <!-- -->
     <BangPopUp v-if="perdeu" :quantTiros="percorreTiro" :total="tamborTiros.length"
       @Reinicio="Reiniciar(tamborTiros)" />
-    <p class="text-4xl font-bold mb-20">Roleta Russa</p>
 
+    <p class="title font-bold text-4xl mb-20">Roleta Russa</p>
 
-    <img class="w-[300px] scale-x-[-1]" src="./img/pistola.png" alt="Imagem aqui" >
+    <div class="scale-x-[-1]">
+      <img
+        :class="['gun w-[300px]', animando ? 'coice' : '']"
+        src="./img/pistola.png"
+        alt="Imagem aqui"
+      >
+    </div>
 
-
-    <div class="w-screen mt-20 h-[60px] flex items-center justify-center">
-      <div class="w-2/5 flex flex-row justify-between items-center">
+    <div class="controls w-screen mt-20 flex items-center justify-center">
+      <div class="w-2/5 flex flex-row justify-between items-center gap-4">
 
         <button
           class="cursor-pointer rounded-lg bg-gray-600 px-4 py-2 hover:bg-gray-700 transition-color duration-300 font-bold"
@@ -71,4 +146,30 @@ function Reiniciar(lista: number[]) {
 
 </template>
 
-<style scoped></style>
+<style scoped>
+@media (orientation: landscape) and (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .gun {
+    width: 150px;
+  }
+  .controls {
+    margin-top: 0.75rem;
+  }
+  .controls > div {
+    width: 80%;
+  }
+}
+
+@keyframes coice {
+  0%   { transform: rotate(0deg) translateY(0); }
+  30%  { transform: rotate(-20deg) translateY(-18px); }
+  100% { transform: rotate(0deg) translateY(0); }
+}
+
+.coice {
+  animation: coice 0.35s ease-out forwards;
+}
+</style>
