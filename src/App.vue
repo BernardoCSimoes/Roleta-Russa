@@ -120,8 +120,8 @@ function Reiniciar(lista: number[]) {
       <p class="text-3xl font-bold">Roleta Russa</p>
       <!-- bolinhas representando as câmaras -->
       <div class="flex gap-2">
-        <div v-for="(bala, i) in tamborTiros" :key="i"
-          :class="['w-4 h-4 rounded-full border-2', bala === 1 ? 'bg-red-500 border-red-600' : 'bg-zinc-600 border-zinc-700']">
+        <div v-for="(_, i) in tamborTiros" :key="i"
+          :class="['w-4 h-4 rounded-full border-2', i < percorreTiro ? 'bg-red-500 border-red-600' : 'bg-zinc-600 border-zinc-700']">
         </div>
       </div>
       <p class="text-zinc-500 text-sm">{{ percorreTiro }} / {{ tamborTiros.length }} tiros</p>

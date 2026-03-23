@@ -4,7 +4,7 @@
       <div class="bg-slate-800 rounded-xl p-6 flex flex-row items-center gap-8 w-[500px]">
 
         <!-- lado esquerdo: ícone -->
-        <img src="" alt="caveira dançando" class="w-20 h-20 flex-shrink-0" />
+        <img src="../img/bonezone-dancing.gif" alt="caveira dançando" class="w-20 h-20 flex-shrink-0" />
 
         <!-- lado direito: texto + botão -->
         <div class="flex flex-col gap-3 flex-1">
