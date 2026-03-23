@@ -111,34 +111,34 @@ function Reiniciar(lista: number[]) {
 </script>
 
 <template>
-  <div class="bg-zinc-900 text-gray-300 w-screen h-screen overflow-hidden
-  flex flex-col justify-center items-center">
+  <div class="bg-zinc-900 text-gray-300 w-screen h-screen flex flex-row items-center justify-between px-8 gap-6">
     <!-- -->
     <BangPopUp v-if="perdeu" :quantTiros="percorreTiro" :total="tamborTiros.length"
       @Reinicio="Reiniciar(tamborTiros)" />
 
-    <p class="title font-bold text-4xl mb-20">Roleta Russa</p>
-
-    <div class="scale-x-[-1]">
-      <img
-        :class="['gun w-[300px]', animando ? 'coice' : '']"
-        src="./img/pistola.png"
-        alt="Imagem aqui"
-      >
+    <div class="flex flex-col items-center gap-4">
+      <p class="text-3xl font-bold">Roleta Russa</p>
+      <!-- bolinhas representando as câmaras -->
+      <div class="flex gap-2">
+        <div v-for="(bala, i) in tamborTiros" :key="i"
+          :class="['w-4 h-4 rounded-full border-2', bala === 1 ? 'bg-red-500 border-red-600' : 'bg-zinc-600 border-zinc-700']">
+        </div>
+      </div>
+      <p class="text-zinc-500 text-sm">{{ percorreTiro }} / {{ tamborTiros.length }} tiros</p>
     </div>
 
-    <div class="controls w-screen mt-20 flex items-center justify-center">
-      <div class="w-2/5 flex flex-row justify-between items-center gap-4">
+    <!-- coluna central: pistola -->
+    <div class="flex-1 flex justify-center">
+      <img class="w-[280px] scale-x-[-1]" :class="{ 'animate-bounce': animando }" src="./img/pistola.png"
+        alt="pistola" />
+    </div>
 
-        <button
-          class="cursor-pointer rounded-lg bg-gray-600 px-4 py-2 hover:bg-gray-700 transition-color duration-300 font-bold"
-          @click="Reiniciar(tamborTiros)">Recarregar</button>
-        <p>Número de Balas {{ percorreTiro }} / {{ tamborTiros.length }}</p>
-        <button
-          class="cursor-pointer rounded-lg bg-gray-600 px-4 py-2 hover:bg-gray-700 transition-color duration-300 font-bold"
-          @click="Atirar(tamborTiros)">Atirar</button>
-
-      </div>
+    <!-- coluna direita: botões -->
+    <div class="flex flex-col gap-4 items-center">
+      <button class="w-32 cursor-pointer rounded-lg bg-zinc-600 px-4 py-3 hover:bg-zinc-700 transition-colors font-bold"
+        @click="Reiniciar(tamborTiros)">Recarregar</button>
+      <button class="w-32 cursor-pointer rounded-lg bg-red-700 px-4 py-3 hover:bg-red-800 transition-colors font-bold"
+        @click="Atirar(tamborTiros)">Atirar</button>
     </div>
 
   </div>
@@ -152,21 +152,32 @@ function Reiniciar(lista: number[]) {
     font-size: 1.5rem;
     margin-bottom: 0.75rem;
   }
+
   .gun {
     width: 150px;
   }
+
   .controls {
     margin-top: 0.75rem;
   }
-  .controls > div {
+
+  .controls>div {
     width: 80%;
   }
 }
 
 @keyframes coice {
-  0%   { transform: rotate(0deg) translateY(0); }
-  30%  { transform: rotate(-20deg) translateY(-18px); }
-  100% { transform: rotate(0deg) translateY(0); }
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+
+  30% {
+    transform: rotate(-20deg) translateY(-18px);
+  }
+
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
 }
 
 .coice {

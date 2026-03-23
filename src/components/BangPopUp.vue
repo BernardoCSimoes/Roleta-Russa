@@ -1,28 +1,26 @@
 <template>
-    <!-- overlay cobre tudo -->
-    <div class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
+  <div class="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
+    <div class="p-[1px] rounded-xl bg-gradient-to-b from-white to-gray-500">
+      <div class="bg-slate-800 rounded-xl p-6 flex flex-row items-center gap-8 w-[500px]">
 
-        <!-- seu card -->
-        <div class="p-[1px] rounded-xl bg-gradient-to-b from-white to-gray-500">
-            <div class="card-inner bg-slate-800 rounded-xl p-6 flex flex-col items-center gap-4 w-72">
+        <!-- lado esquerdo: ícone -->
+        <img src="" alt="caveira dançando" class="w-20 h-20 flex-shrink-0" />
 
-                <img src="../img/bonezone-dancing.gif" alt="caveira dançando" class="skull w-24 h-24">
-
-                <div class="card-text flex flex-col items-center gap-4 w-full">
-                    <h2 class="text-white text-2xl font-bold">Você perdeu!</h2>
-                    <p class="text-gray-300 text-sm">Quantidade de tiros: {{ props.quantTiros }}/{{ props.total }}</p>
-                    <p class="text-gray-400 text-sm">Mais sorte na próxima 🍀</p>
-                    <button
-                        class="bg-slate-600 hover:bg-slate-500 text-white font-semibold px-6 py-2 rounded-lg cursor-pointer transition-colors duration-200 w-full"
-                        @click="$emit('Reinicio')">
-                        Reiniciar
-                    </button>
-                </div>
-
-            </div>
+        <!-- lado direito: texto + botão -->
+        <div class="flex flex-col gap-3 flex-1">
+          <h2 class="text-red-500 text-2xl font-bold">Você perdeu!</h2>
+          <p class="text-gray-300 text-sm">Quantidade de tiros: {{ props.quantTiros }}/{{ props.total }}</p>
+          <p class="text-gray-400 text-sm">Mais sorte na próxima 🍀</p>
+          <button
+            class="bg-red-700 hover:bg-red-800 text-white font-semibold px-6 py-2 rounded-lg cursor-pointer transition-colors duration-200 w-full mt-1"
+            @click="$emit('Reinicio')">
+            Reiniciar
+          </button>
         </div>
 
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -41,13 +39,16 @@ const props = defineProps(['quantTiros', 'total']);
     align-items: center;
     gap: 1.5rem;
   }
+
   .card-text {
     align-items: flex-start;
   }
+
   .skull {
     order: 1;
     flex-shrink: 0;
   }
+
   .card-text {
     order: 0;
   }
