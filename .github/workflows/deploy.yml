@@ -20,7 +20,7 @@ jobs:
           node-version: 20
 
       - run: npm install
-      - run: npx --yes vite build
+      - run: node node_modules/vite/bin/vite.js build
 
       - uses: actions/upload-pages-artifact@v3
         with:
