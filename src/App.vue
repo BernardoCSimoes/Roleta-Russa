@@ -129,7 +129,7 @@ function Reiniciar(lista: number[]) {
 
     <!-- coluna central: pistola -->
     <div class="flex-1 flex justify-center">
-      <img class="w-[280px] scale-x-[-1]" :class="{ 'animate-bounce': animando }" src="./img/pistola.png"
+      <img class="w-[280px] scale-x-[-1]" :class="{ 'coice': animando }" src="./img/pistola.png"
         alt="pistola" />
     </div>
 
@@ -168,19 +168,20 @@ function Reiniciar(lista: number[]) {
 
 @keyframes coice {
   0% {
-    transform: rotate(0deg) translateY(0);
+    transform: rotate(0deg);
   }
 
-  30% {
-    transform: rotate(-20deg) translateY(-18px);
+  25% {
+    transform: rotate(15deg);
   }
 
   100% {
-    transform: rotate(0deg) translateY(0);
+    transform: rotate(0deg);
   }
 }
 
 .coice {
+  transform-origin: bottom center;
   animation: coice 0.35s ease-out forwards;
 }
 </style>
